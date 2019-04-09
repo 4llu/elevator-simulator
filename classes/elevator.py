@@ -1,6 +1,6 @@
 from configuration import ELEVATOR_CAPACITY
 
-class elevator():
+class Elevator():
   def __init__(self):
     self.capacity = ELEVATOR_CAPACITY
     self.current_floor = 0

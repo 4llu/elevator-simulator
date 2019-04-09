@@ -11,7 +11,8 @@ ELEVATOR_CAPACITY = 8
 
 # People
 MEAN_ENTRY_TIME = datetime(2019, 4, 7, 8)
-MEAN_LUNCH_TIME = datetime(2019, 4, 7, 12)
+MEAN_TO_LUNCH_TIME = datetime(2019, 4, 7, 11, 30)
+MEAN_FROM_LUNCH_TIME = datetime(2019, 4, 7, 12, 30)
 MEAN_LEAVE_TIME = datetime(2019, 4, 7, 17)
 
 # Time
