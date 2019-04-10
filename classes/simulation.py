@@ -38,14 +38,12 @@ class Simulation():
       for person in self.people:
         person.act(self.time)
 
-        # Check if walking to elevator
-        if person.distance_to_elevator > 0 and person not in self.walking_list:
-          direction = "UP" if person.target_floor - person.current_floor > 0 else "DOWN" # FIXME Make into function
-
-          # Add to queue
-          self.walking_list[person.current_floor].append((person, direction))
-          # Call elevator (by prediction)
-          self.elevatorAI.call_elevator_prediction(person.current_floor, direction)
+        # Check if spotted by camera
+        if person.distance_to_elevator == TICKS_TO_ELEVATOR:
+          # Add to walking queue
+          self.walking_list[person.current_floor].append(person)
+          # Call elevator (prediction)
+          self.elevatorAI.call_elevator_prediction(person.current_floor, person.target_floor)
 
         # Check if waiting for elevator
         if person.waiting and person not in self.waiting_list:

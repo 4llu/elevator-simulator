@@ -88,8 +88,13 @@ class Person:
         self.waiting = True
 
     # FROM_WORK (Out of building)
-    else:
+    elif self.state == 6:
       pass
+
+    else:
+      print("Person state not set correctly!")
+      print("Current state: " + self.state)
+
 
   def get_in_elevator(self):
     self.in_elevator = True

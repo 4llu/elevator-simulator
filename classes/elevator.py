@@ -4,6 +4,7 @@ class Elevator():
   def __init__(self):
     self.capacity = ELEVATOR_CAPACITY
     self.current_floor = 0
+    self.direction = "IDLE" # Options: NONE, UP, DOWN
     self.passangers = []
 
   # Process actions (if any) for this tick
