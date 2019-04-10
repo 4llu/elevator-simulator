@@ -1,3 +1,5 @@
+from configuration import CAMERAS, TICKS_TO_ELEVATOR
+
 # STATE ORDER
 
 # 0 TO_WORK
@@ -19,6 +21,8 @@ class Person:
     self.from_work_time = from_work_time
     self.state = 0
     self.target_floor = -1
+    self.current_floor = 0
+    self.distance_to_elevator = 0
     self.waiting = False
     self.in_elevator = False
     self.waiting_ticks = 0
@@ -29,18 +33,33 @@ class Person:
     if self.waiting:
       self.waiting_ticks += 1
 
+    # Do nothing if walking to elevator
+    elif self.distance_to_elevator > 0:
+      self.distance_to_elevator -= 1
+
+      # Start waiting if arrived
+      if self.distance_to_elevator == 0:
+        self.waiting = True
+
     # TO_WORK
     elif self.state == 0 and time > self.to_work_time:
-      # FIXME Edit for naive solution
       self.target_floor = self.home_floor
-      self.waiting = True
+
+      if CAMERAS:
+        self.distance_to_elevator = TICKS_TO_ELEVATOR
+      else:
+        self.waiting = True
 
     # WORKING -> TO_LUNCH
     elif self.state == 1 and time > self.to_lunch_time:
       # FIXME Edit for naive solution
       self.state += 1
-      self.waiting = True
       self.target_floor = 0
+
+      if CAMERAS:
+        self.distance_to_elevator = TICKS_TO_ELEVATOR
+      else:
+        self.waiting = True
 
     # TO_LUNCH -> LUNCH (handled by elevator)
 
@@ -48,8 +67,12 @@ class Person:
     elif self.state == 3 and time > self.from_lunch_time:
       # FIXME Edit for naive solution
       self.state += 1
-      self.waiting = True
       self.target_floor = self.home_floor
+
+      if CAMERAS:
+        self.distance_to_elevator = TICKS_TO_ELEVATOR
+      else:
+        self.waiting = True
 
     # FROM_LUNCH -> WORKING_2 (Handled by elevator)
 
@@ -57,8 +80,12 @@ class Person:
     elif self.state == 5 and time > self.from_work_time:
       # FIXME Edit for naive solution
       self.state += 1
-      self.waiting = True
       self.target_floor = 0
+
+      if CAMERAS:
+        self.distance_to_elevator = TICKS_TO_ELEVATOR
+      else:
+        self.waiting = True
 
     # FROM_WORK (Out of building)
     else:
@@ -71,6 +98,7 @@ class Person:
   def get_out_of_elevator(self):
     self.in_elevator = False
     self.state += 1
+    self.current_floor = self.target_floor
     self.target_floor = -1
 
   # Reset for a new day

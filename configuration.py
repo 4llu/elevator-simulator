@@ -6,8 +6,11 @@ FLOOR_CAPACITY = 40
 BUILDING_FULLNESS = 0.8
 
 # Elevators
+ELEVATOR_AI = "BASIC" # Other options [MEDIUM, ADVANCED]
+CAMERAS = False
 ELEVATOR_NUM = 4
 ELEVATOR_CAPACITY = 8
+TICKS_TO_ELEVATOR = 8 # Time it takes to walk to the elevator from the camera in ticks
 
 # People
 MEAN_ENTRY_TIME = datetime(2019, 4, 7, 8)

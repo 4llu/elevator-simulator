@@ -3,5 +3,5 @@ from configuration import RUN_DAYS
 
 # Start
 simulation = Simulation()
-simulation.setup()
+simulation.populate()
 simulation.run(RUN_DAYS)
