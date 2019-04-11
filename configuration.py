@@ -1,8 +1,8 @@
 from datetime import datetime
 
 # Building
-FLOORS = 30
-FLOOR_CAPACITY = 40
+FLOORS = 20
+FLOOR_CAPACITY = 24
 BUILDING_FULLNESS = 0.8
 
 # Elevators
@@ -15,7 +15,7 @@ TICKS_TO_ELEVATOR = 8 # Time it takes to walk to the elevator from the camera in
 # People
 MEAN_ENTRY_TIME = datetime(2019, 4, 7, 8)
 MEAN_TO_LUNCH_TIME = datetime(2019, 4, 7, 11, 30)
-MEAN_FROM_LUNCH_TIME = datetime(2019, 4, 7, 12, 30)
+MEAN_LUNCH_TIME = 45
 MEAN_LEAVE_TIME = datetime(2019, 4, 7, 17)
 
 # Time

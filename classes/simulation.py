@@ -27,7 +27,7 @@ class Simulation():
       home_floor = ps % FLOOR_CAPACITY
       entry_time = MEAN_ENTRY_TIME + timedelta(minutes=np.random.normal(0, 30))
       to_lunch_time = MEAN_TO_LUNCH_TIME + timedelta(minutes=np.random.normal(0, 30))
-      from_lunch_time = MEAN_FROM_LUNCH_TIME + timedelta(minutes=np.random.normal(0, 30))
+      from_lunch_time = to_lunch_time + timedelta(minutes=MEAN_LUNCH_TIME) + timedelta(minutes=np.random.normal(0, 5))
       leave_time = MEAN_LEAVE_TIME + timedelta(minutes=np.random.normal(0, 30))
 
       self.people.append(Person(ps, home_floor, entry_time, to_lunch_time, from_lunch_time, leave_time))
