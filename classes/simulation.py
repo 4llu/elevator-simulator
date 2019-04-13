@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import random
 import math
 import numpy as np
+from functools import reduce
 
 from configuration import *
 from classes.person import Person
@@ -74,3 +75,6 @@ class Simulation():
         # Reset elevators
         for elevator in self.elevators:
           elevator.reset()
+
+    cumulative_waiting_time = reduce(lambda s, p : p.waiting_ticks + s, self.people, 0)
+    print(cumulative_waiting_time)
