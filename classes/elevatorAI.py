@@ -1,4 +1,4 @@
-from configuration import ELEVATOR_AI, FLOORS
+from configuration import ELEVATOR_AI, ELEVATOR_CAPACITY, FLOORS
 
 class ElevatorAI():
   def __init__(self, elevators):
@@ -21,83 +21,115 @@ class ElevatorAI():
 
   # Basic elevator call
   def call_elevator(self, person, floor, direction):
-    # Add to lists if not already called
-    if not (floor, direction) in self.queue:
-      # Call list
-      self.queue.append((floor, direction))
-      # People list
-      if direction > 0:
-        self.going_up[floor].append(person)
-      else:
-        self.going_down[floor].append(person)
+    # Call list
+    self.queue.append((floor, direction))
+    # People list
+    if direction > 0:
+      self.going_up[floor].append(person)
+    else:
+      self.going_down[floor].append(person)
 
   # Predictive elevator call
   def call_elevator_prediction(self, floor, target_floor):
     self.prediction_queue.append((floor, target_floor))
 
-  def basicAI(self):
-    # Free elevators
+  def get_free_elevators(self):
     free_elevators = []
     for elevator in self.elevators:
-      if elevator.direction == 0:
-        free_elevators.append(elevator)
-    # Sort lowest first
-    free_elevators = sorted(free_elevators, key=lambda e: e.current_floor)
+        if elevator.direction == 0:
+          free_elevators.append(elevator)
+    # Return with lowest first
+    return sorted(free_elevators, key=lambda e: e.current_floor)
 
-    # Elevators going down
+  def get_up_elevators(self):
     up_elevators = []
     for elevator in self.elevators:
       if elevator.direction == 1:
         up_elevators.append(elevator)
-    # Sort highest first
-    up_elevators = sorted(up_elevators, key=lambda e : -e.current_floor)
+    # Sort highest first and return
+    return sorted(up_elevators, key=lambda e: -e.current_floor)
 
-    # Elevators going down
+  def get_down_elevators(self):
     down_elevators = []
     for elevator in self.elevators:
       if elevator.direction == -1:
         down_elevators.append(elevator)
-    # Sort lowest first
-    down_elevators = sorted(down_elevators, key=lambda e : e.current_floor)
+    # Sort lowest first and return
+    return sorted(down_elevators, key=lambda e : e.current_floor)
 
+  def get_up_calls(self):
     # Separate calls per direction
-    up_calls = list(filter(lambda c: c[1] == 1, self.queue)) # NOTE Technically uselless, as only up calls come from floor 0
+    up_calls = list(filter(lambda c: c[1] == 1, self.queue))
+    # Sort lowest first
+    return sorted(up_calls, key=lambda c : c[0]) # NOTE Technically uselless, as only up calls come from floor 0
+
+  def get_down_calls(self):
+    # Separate calls per direction
     down_calls = list(filter(lambda c: c[1] == -1, self.queue))
     # Sort lowest first
-    up_calls = sorted(up_calls, key=lambda c : c[0]) # NOTE Technically uselless, as only up calls come from floor 0
-    down_calls = sorted(down_calls, key=lambda c : c[0])
+    return sorted(down_calls, key=lambda c : c[0])
+
+
+  def basicAI(self):
+    # Elevator list
+    free_elevators = self.get_free_elevators()
+    # up_elevators = self.get_up_elevators() # NOTE Technically not necessary with current setup
+    down_elevators = self.get_down_elevators()
+
+    # Call lists
+    up_calls = self.get_up_calls()
+    down_calls = self.get_down_calls()
+
 
     # Assign up going elevators (to free elevators)
     # NOTE Technically overkill, as only up calls come from floor 0
-    if len(free_elevators) > 0:
-      for c in up_calls:
-        free_elevators[0].go_to_floor(c[0])
-        # Remove call from call queue
-        self.queue.remove(c)
+    while len(free_elevators) > 0 and len(up_calls) > 0:
+      i = 0 # Call index (to keep track of elevator capacity)
 
-      # Remove elevator from free elevators if a call was added to it
-      if len(up_calls) > 1:
-        del free_elevators[0]
+      while i < ELEVATOR_CAPACITY and len(up_calls) > 0:
+        # Add target floor
+        free_elevators[0].go_to_floor(up_calls[0][0])
+        # Remove from lists
+        del up_calls[0]
+        self.queue.remove(up_calls[0])
+
+        i += 1
+
+      # Elevator no longer free
+      del free_elevators[0]
 
     # Assign down going elevators (to already down going elevators)
-    if len(down_elevators) > 0:
+    if len(down_elevators) > 0 and len(down_calls) > 0:
+      i = 0 # Call index (to keep tack of elevator capacity)
       # Assign all possible calls to highest down going elevator
-      i = 0
-      while i < len(down_calls):
+      while i < ELEVATOR_CAPACITY and len(down_calls) > 0:
         # Check that elevator is above the call floor
-        if down_elevators[-1].current_floor > down_calls[i][0]:
+        if down_elevators[-1].current_floor > down_calls[0][0]:
           # Add target floor
-          down_elevators[-1].go_to_floor(down_calls[i][0])
+          down_elevators[-1].go_to_floor(down_calls[0][0])
           # Remove from calls
-          self.queue.remove(down_calls[i])
-          del down_calls[i]
-        else:
+          self.queue.remove(down_calls[0])
+          del down_calls[0]
+
           i += 1
 
+      # Elevator full
+      del down_elevators[-1]
+
     # If calls left, add them to the (possible) free elevator
-    if len(down_calls) > 0 and len(free_elevators) > 0:
-      for c in down_calls:
-        free_elevators[0].go_to_floor(c[0])
+    while len(down_calls) > 0 and len(free_elevators) > 0:
+      i = 0 # Call index (to keep track of elevator capacity)
+      while i < ELEVATOR_CAPACITY and len(down_calls) > 0:
+        # Add target floor
+        free_elevators[0].go_to_floor(down_calls[0][0])
+        # Remove from calls
+        self.queue.remove(down_calls[0])
+        del down_calls[0]
+
+        i += 1
+
+      # Elevator full
+      del free_elevators[0]
 
     # Any calls left carry on to the next tick
 
