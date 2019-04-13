@@ -13,11 +13,10 @@ class Simulation():
     self.elevators = [Elevator() for i in range(ELEVATOR_NUM)]
     self.elevatorAI = ElevatorAI(self.elevators)
     self.people = []
-    self.walking_list = [[] for i in range(FLOORS)]
-    self.waiting_list = [[] for i in range(FLOORS)]
     self.time = DAY_START_TIME
     self.day = 0
 
+  # Create the people for the simulation
   def populate(self):
     # Create people
     building_capacity = FLOORS * FLOOR_CAPACITY
@@ -33,34 +32,31 @@ class Simulation():
       self.people.append(Person(ps, home_floor, entry_time, to_lunch_time, from_lunch_time, leave_time))
 
   def run(self, days):
+    # Main loop
     while self.day < days:
+
       # Move people
       for person in self.people:
         person.act(self.time)
 
         # Check if spotted by camera
-        if person.distance_to_elevator == TICKS_TO_ELEVATOR:
-          # Add to walking queue
-          self.walking_list[person.current_floor].append(person)
+        if person.distance_to_elevator == TIME_TO_ELEVATOR:
           # Call elevator (prediction)
           self.elevatorAI.call_elevator_prediction(person.current_floor, person.target_floor)
 
         # Check if waiting for elevator
-        if person.waiting and person not in self.waiting_list:
-          # Remove from walking list
-          for i, p in enumerate(self.walking_list[person.current_floor]):
-            if p.id == person.id:
-              del self.walking_list[person.current_floor][i]
-
-          direction = "UP" if person.target_floor - person.current_floor > 0 else "DOWN"
-
-          # Add to queue
-          self.waiting_list[person.current_floor].append((person, direction))
+        if person.waiting and not person.elevator_called:
           # Call elevator
-          self.elevatorAI.call_elevator(person.current_floor, direction)
+          direction = -1 if person.target_floor - person.current_floor > 0 else -1
+          self.elevatorAI.call_elevator(person, person.current_floor, direction)
+          person.elevator_called = True
+
+      # Update elevator orders
+      self.elevatorAI.act()
 
       # Move elevators
-      self.elevatorAI.act(self.waiting_list, self.walking_list)
+      for elevator in self.elevators:
+        elevator.act(self.elevatorAI.going_down[elevator.current_floor], self.elevatorAI.going_up[elevator.current_floor])
 
       # Move time
       self.time = self.time + timedelta(seconds=TICK_DURATION)

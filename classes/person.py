@@ -1,4 +1,4 @@
-from configuration import CAMERAS, TICKS_TO_ELEVATOR
+from configuration import CAMERAS, TIME_TO_ELEVATOR
 
 # STATE ORDER
 
@@ -25,6 +25,7 @@ class Person:
     self.distance_to_elevator = 0
     self.waiting = False
     self.in_elevator = False
+    self.elevator_called = False
     self.waiting_ticks = 0
 
   # Process actions (if any) for this tick
@@ -46,7 +47,7 @@ class Person:
       self.target_floor = self.home_floor
 
       if CAMERAS:
-        self.distance_to_elevator = TICKS_TO_ELEVATOR
+        self.distance_to_elevator = TIME_TO_ELEVATOR
       else:
         self.waiting = True
 
@@ -57,7 +58,7 @@ class Person:
       self.target_floor = 0
 
       if CAMERAS:
-        self.distance_to_elevator = TICKS_TO_ELEVATOR
+        self.distance_to_elevator = TIME_TO_ELEVATOR
       else:
         self.waiting = True
 
@@ -70,7 +71,7 @@ class Person:
       self.target_floor = self.home_floor
 
       if CAMERAS:
-        self.distance_to_elevator = TICKS_TO_ELEVATOR
+        self.distance_to_elevator = TIME_TO_ELEVATOR
       else:
         self.waiting = True
 
@@ -83,7 +84,7 @@ class Person:
       self.target_floor = 0
 
       if CAMERAS:
-        self.distance_to_elevator = TICKS_TO_ELEVATOR
+        self.distance_to_elevator = TIME_TO_ELEVATOR
       else:
         self.waiting = True
 
@@ -91,16 +92,16 @@ class Person:
     elif self.state == 6:
       pass
 
-    else:
+    # Error case
+    elif self.state not in [0, 1, 2, 3, 4, 5, 6]:
       print("Person state not set correctly!")
-      print("Current state: " + self.state)
+      print("Current state: " + str(self.state))
 
-
-  def get_in_elevator(self):
+  def enter_elevator(self):
     self.in_elevator = True
     self.waiting = False
   
-  def get_out_of_elevator(self):
+  def exit_elevator(self):
     self.in_elevator = False
     self.state += 1
     self.current_floor = self.target_floor

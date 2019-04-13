@@ -10,7 +10,8 @@ ELEVATOR_AI = "BASIC" # Other options [MEDIUM, ADVANCED]
 CAMERAS = False
 ELEVATOR_NUM = 4
 ELEVATOR_CAPACITY = 8
-TICKS_TO_ELEVATOR = 8 # Time it takes to walk to the elevator from the camera in ticks
+TIME_TO_ELEVATOR = 8 # Ticks it takes to walk to the elevator from the camera in ticks
+ELEVATOR_LOAD_TIME = 4 # Ticks it takes for people to get in and out of the elevator
 
 # People
 MEAN_ENTRY_TIME = datetime(2019, 4, 7, 8)
