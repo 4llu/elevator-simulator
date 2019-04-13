@@ -134,7 +134,18 @@ class ElevatorAI():
     # Any calls left carry on to the next tick
 
   def mediumAI(self):
-    pass
+    # Do everything the same as in basic AI
+    self.basicAI()
+
+    free_elevators = self.get_free_elevators()
+
+    # Send free elevators to prediction queue targets
+    while len(free_elevators) > 0 and len(self.prediction_queue) > 0:
+      # Send elevator
+      free_elevators[0].go_to_floor(self.prediction_queue[0])
+
+      del free_elevators[0]
+      del self.prediction_queue[0]
 
   def advancedAI(self):
     pass
