@@ -33,6 +33,28 @@ class ElevatorAI():
   def call_elevator_prediction(self, floor, target_floor):
     self.prediction_queue.append((floor, target_floor))
 
+  # Remove people that have entered elevators from waiting lists (called after elevators take people in)
+  def clear_waiting_lists(self):
+    # Going up
+    removal_list = []
+    for f in range(self.going_up):
+      for p in range(self.going_up[f]):
+        if self.going_up[f][p].in_elevator:
+          removal_list.append((f, p))
+
+    for (f, p) in removal_list.reverse():
+      del self.going_up[f][p]
+
+    # Going down
+    removal_list = []
+    for f in range(self.going_down):
+      for p in range(self.going_down[f]):
+        if self.going_down[f][p].in_elevator:
+          removal_list.append((f, p))
+
+    for (f, p) in removal_list.reverse():
+      del self.going_down[f][p]
+
   def get_free_elevators(self):
     free_elevators = []
     for elevator in self.elevators:

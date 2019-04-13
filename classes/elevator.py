@@ -10,7 +10,7 @@ class Elevator():
     self.wait_time = 0
 
   # Process actions (if any) for this tick
-  def act(self, going_up, going_down):
+  def act(self, going_up, going_down, elevatorAI):
 
     # Wait (Doors, opening/closing, etc.)
     if self.wait_time > 0:
@@ -33,8 +33,8 @@ class Elevator():
         if passanger.target_floor == self.current_floor:
           passanger.exit_elevator()
 
-      # Get people in
-      new_passangers = going_up if self.direction > 0 else going_down
+      # Get people in (and only take as many as capacity allows)
+      new_passangers = going_up[ELEVATOR_CAPACITY] if self.direction > 0 else going_down[ELEVATOR_CAPACITY]
       # Add to passangers
       self.passangers += new_passangers
 
@@ -43,6 +43,9 @@ class Elevator():
         new_passanger.enter_elevator()
         # Add new target floors
         self.go_to_floor(new_passanger.target_floor)
+
+      # Remove people that entered the elevator from waiting lists
+      elevatorAI.clear_waiting_lists()
 
     # Move a floor
     elif self.current_floor != self.target_floors[0]:
