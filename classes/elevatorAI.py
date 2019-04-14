@@ -37,22 +37,26 @@ class ElevatorAI():
   def clear_waiting_lists(self):
     # Going up
     removal_list = []
-    for f in range(self.going_up):
-      for p in range(self.going_up[f]):
+    for f in range(len(self.going_up)):
+      for p in range(len(self.going_up[f])):
         if self.going_up[f][p].in_elevator:
           removal_list.append((f, p))
 
-    for (f, p) in removal_list.reverse():
+    # Remove the people that entered up going elevators
+    removal_list.reverse()
+    for (f, p) in removal_list:
       del self.going_up[f][p]
 
     # Going down
     removal_list = []
-    for f in range(self.going_down):
-      for p in range(self.going_down[f]):
+    for f in range(len(self.going_down)):
+      for p in range(len(self.going_down[f])):
         if self.going_down[f][p].in_elevator:
           removal_list.append((f, p))
 
-    for (f, p) in removal_list.reverse():
+    # Remove people that enetered downgoing the elevators
+    removal_list.reverse()
+    for (f, p) in removal_list:
       del self.going_down[f][p]
 
   def get_free_elevators(self):

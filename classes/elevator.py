@@ -34,7 +34,7 @@ class Elevator():
           passanger.exit_elevator()
 
       # Get people in (and only take as many as capacity allows)
-      new_passangers = going_up[ELEVATOR_CAPACITY] if self.direction > 0 else going_down[ELEVATOR_CAPACITY]
+      new_passangers = going_up[:ELEVATOR_CAPACITY] if self.direction > 0 else going_down[:ELEVATOR_CAPACITY]
       # Add to passangers
       self.passangers += new_passangers
 
