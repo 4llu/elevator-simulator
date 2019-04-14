@@ -22,11 +22,11 @@ class Simulation():
   # Create the people for the simulation
   def populate(self):
     # Create people
-    building_capacity = FLOORS * FLOOR_CAPACITY
+    building_capacity = (FLOORS - 1) * FLOOR_CAPACITY # -1 because floor 0 is not a valid home floor
     people_slots = random.sample(range(building_capacity),  math.ceil(building_capacity * BUILDING_FULLNESS))
 
     for ps in people_slots:
-      home_floor = math.floor(ps/FLOOR_CAPACITY)
+      home_floor = math.floor(ps/FLOOR_CAPACITY) + 1 # +1 because 0 is not a valid home floor
       entry_time = MEAN_ENTRY_TIME + timedelta(minutes=np.random.normal(0, 30))
       to_lunch_time = MEAN_TO_LUNCH_TIME + timedelta(minutes=np.random.normal(0, 30))
       from_lunch_time = to_lunch_time + timedelta(minutes=MEAN_LUNCH_TIME) + timedelta(minutes=np.random.normal(0, 5))
