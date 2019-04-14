@@ -26,13 +26,12 @@ class Person:
     self.waiting = False
     self.in_elevator = False
     self.elevator_called = False
-    self.waiting_ticks = 0
 
   # Process actions (if any) for this tick
   def act(self, time):
     # Log if waiting
     if self.waiting:
-      self.waiting_ticks += 1
+      pass
 
     # Do nothing if walking to elevator
     elif self.distance_to_elevator > 0:
