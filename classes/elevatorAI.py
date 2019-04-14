@@ -128,8 +128,8 @@ class ElevatorAI():
         # Add target floor
         free_elevators[0].go_to_floor(up_calls[0][0])
         # Remove from lists
-        del up_calls[0]
         self.queue.remove(up_calls[0])
+        del up_calls[0]
 
         i += 1
 
