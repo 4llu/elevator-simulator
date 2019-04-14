@@ -38,7 +38,9 @@ class Simulation():
     # Main loop
     while self.day < days:
 
-      # Move people
+      # People Act
+      #############
+
       for person in self.people:
         person.act(self.time)
 
@@ -54,10 +56,14 @@ class Simulation():
           self.elevatorAI.call_elevator(person, person.current_floor, direction)
           person.elevator_called = True
 
-      # Update elevator orders
+      # ELEVATOR AI ACT
+      #################
+
       self.elevatorAI.act()
 
-      # Move elevators
+      # ELEVATORS ACT
+      ###############
+
       for elevator in self.elevators:
         elevator.act(self.elevatorAI.going_down[elevator.current_floor], self.elevatorAI.going_up[elevator.current_floor], self.elevatorAI)
 

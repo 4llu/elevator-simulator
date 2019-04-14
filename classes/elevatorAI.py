@@ -19,6 +19,9 @@ class ElevatorAI():
       print("Elevator AI not chosen properly!")
       print("ELEVATOR_AI: " + ELEVATOR_AI)
 
+  # CALLS
+  #######
+
   # Basic elevator call
   def call_elevator(self, person, floor, direction):
     # Call list
@@ -32,6 +35,10 @@ class ElevatorAI():
   # Predictive elevator call
   def call_elevator_prediction(self, floor, target_floor):
     self.prediction_queue.append((floor, target_floor))
+
+
+  # UTILS FOR AI
+  ##############
 
   # Remove people that have entered elevators from waiting lists (called after elevators take people in)
   def clear_waiting_lists(self):
@@ -95,6 +102,9 @@ class ElevatorAI():
     # Sort lowest first
     return sorted(down_calls, key=lambda c : c[0])
 
+  ###############
+  # ELEVATOR AI #
+  ###############
 
   def basicAI(self):
     # Elevator list
@@ -106,6 +116,8 @@ class ElevatorAI():
     up_calls = self.get_up_calls()
     down_calls = self.get_down_calls()
 
+    if len(up_calls) > 1:
+      print(len(up_calls))
 
     # Assign up going elevators (to free elevators)
     # NOTE Technically overkill, as only up calls come from floor 0
