@@ -116,8 +116,8 @@ class ElevatorAI():
     up_calls = self.get_up_calls()
     down_calls = self.get_down_calls()
 
-    if len(up_calls) > 1:
-      print(len(up_calls))
+      # UP
+      ####
 
     # Assign up going elevators (to free elevators)
     # NOTE Technically overkill, as only up calls come from floor 0
@@ -136,6 +136,9 @@ class ElevatorAI():
       # Elevator no longer free
       del free_elevators[0]
 
+    # DOWN
+    ######
+
     # Assign down going elevators (to already down going elevators)
     if len(down_elevators) > 0 and len(down_calls) > 0:
       i = 0 # Call index (to keep tack of elevator capacity)
@@ -153,6 +156,9 @@ class ElevatorAI():
 
       # Elevator full
       del down_elevators[-1]
+
+    # LEFTOVERS
+    ###########
 
     # If calls left, add them to the (possible) free elevator
     while len(down_calls) > 0 and len(free_elevators) > 0:

@@ -27,6 +27,9 @@ class Person:
     self.in_elevator = False
     self.elevator_called = False
 
+    # ACT
+    #####
+
   # Process actions (if any) for this tick
   def act(self, time):
     # Log if waiting
@@ -52,7 +55,6 @@ class Person:
 
     # WORKING -> TO_LUNCH
     elif self.state == 1 and time > self.to_lunch_time and not (self.waiting or self.in_elevator):
-      # FIXME Edit for naive solution
       self.state += 1
       self.target_floor = 0
 
@@ -65,7 +67,6 @@ class Person:
 
     # LUNCH -> FROM_LUNCH
     elif self.state == 3 and time > self.from_lunch_time and not (self.waiting or self.in_elevator):
-      # FIXME Edit for naive solution
       self.state += 1
       self.target_floor = self.home_floor
 
@@ -78,7 +79,6 @@ class Person:
 
     # WORKING_2 -> FROM_WORK
     elif self.state == 5 and time > self.from_work_time and not (self.waiting or self.in_elevator):
-      # FIXME Edit for naive solution
       self.state += 1
       self.target_floor = 0
 
@@ -95,6 +95,9 @@ class Person:
     elif self.state not in [0, 1, 2, 3, 4, 5, 6]:
       print("Person state not set correctly!")
       print("Current state: " + str(self.state))
+
+  # ELEVATOR INTERACTIONS
+  #######################
 
   def enter_elevator(self):
     self.in_elevator = True
