@@ -102,6 +102,7 @@ class Person:
   def enter_elevator(self):
     self.in_elevator = True
     self.waiting = False
+    self.elevator_called = False
   
   def exit_elevator(self):
     self.in_elevator = False
