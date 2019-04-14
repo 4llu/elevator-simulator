@@ -9,6 +9,7 @@ from configuration import CAMERAS, TIME_TO_ELEVATOR
 # 4 FROM_LUNCH
 # 5 WORKING_2
 # 6 FROM_WORK
+# 7 AT_HOME
 
 
 class Person:
@@ -87,12 +88,12 @@ class Person:
       else:
         self.waiting = True
 
-    # FROM_WORK (Out of building)
-    elif self.state == 6:
+    # AT_HOME (Out of building)
+    elif self.state == 7:
       pass
 
     # Error case
-    elif self.state not in [0, 1, 2, 3, 4, 5, 6]:
+    elif self.state not in [0, 1, 2, 3, 4, 5, 6, 7]:
       print("Person state not set correctly!")
       print("Current state: " + str(self.state))
 
