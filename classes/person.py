@@ -42,7 +42,7 @@ class Person:
         self.waiting = True
 
     # TO_WORK
-    elif self.state == 0 and time > self.to_work_time:
+    elif self.state == 0 and time > self.to_work_time and not (self.waiting or self.in_elevator):
       self.target_floor = self.home_floor
 
       if CAMERAS:
@@ -51,7 +51,7 @@ class Person:
         self.waiting = True
 
     # WORKING -> TO_LUNCH
-    elif self.state == 1 and time > self.to_lunch_time:
+    elif self.state == 1 and time > self.to_lunch_time and not (self.waiting or self.in_elevator):
       # FIXME Edit for naive solution
       self.state += 1
       self.target_floor = 0
@@ -64,7 +64,7 @@ class Person:
     # TO_LUNCH -> LUNCH (handled by elevator)
 
     # LUNCH -> FROM_LUNCH
-    elif self.state == 3 and time > self.from_lunch_time:
+    elif self.state == 3 and time > self.from_lunch_time and not (self.waiting or self.in_elevator):
       # FIXME Edit for naive solution
       self.state += 1
       self.target_floor = self.home_floor
@@ -77,7 +77,7 @@ class Person:
     # FROM_LUNCH -> WORKING_2 (Handled by elevator)
 
     # WORKING_2 -> FROM_WORK
-    elif self.state == 5 and time > self.from_work_time:
+    elif self.state == 5 and time > self.from_work_time and not (self.waiting or self.in_elevator):
       # FIXME Edit for naive solution
       self.state += 1
       self.target_floor = 0
