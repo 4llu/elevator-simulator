@@ -24,7 +24,7 @@ class Simulation():
     people_slots = random.sample(range(building_capacity),  math.ceil(building_capacity * BUILDING_FULLNESS))
 
     for ps in people_slots:
-      home_floor = ps % FLOOR_CAPACITY
+      home_floor = math.floor(ps/FLOOR_CAPACITY)
       entry_time = MEAN_ENTRY_TIME + timedelta(minutes=np.random.normal(0, 30))
       to_lunch_time = MEAN_TO_LUNCH_TIME + timedelta(minutes=np.random.normal(0, 30))
       from_lunch_time = to_lunch_time + timedelta(minutes=MEAN_LUNCH_TIME) + timedelta(minutes=np.random.normal(0, 5))
