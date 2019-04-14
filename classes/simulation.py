@@ -67,6 +67,9 @@ class Simulation():
       for elevator in self.elevators:
         elevator.act(self.elevatorAI.going_down[elevator.current_floor], self.elevatorAI.going_up[elevator.current_floor], self.elevatorAI)
 
+      # TIME
+      ######
+
       # Move time
       self.time = self.time + timedelta(seconds=TICK_DURATION)
 
