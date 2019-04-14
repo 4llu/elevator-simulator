@@ -67,8 +67,8 @@ class Simulation():
       # Check if the day is over
       if self.time.hour >= DAY_END_TIME.hour:
         # Move to next day
-        self.time = DAY_START_TIME
         self.day += 1
+        self.time = DAY_START_TIME + timedelta(days=self.day)
 
         # Reset people
         for person in self.people:
