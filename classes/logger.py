@@ -12,9 +12,9 @@ class Logger():
   def log_people_movement(self, time, people):
     for p in people:
       if p.waiting:
-        self.people_movement.append((p.id, tf(time), "WAITING"))
+        self.people_movement.append((p.id, tf(time), "WAITING", p.current_floor, p.target_floor))
       elif p.in_elevator:
-        self.people_movement.append((p.id, tf(time), "IN_ELEVATOR"))
+        self.people_movement.append((p.id, tf(time), "IN_ELEVATOR", p.current_floor, p.target_floor))
 
   def get_total_waiting_time(self):
     return len(list(filter(lambda e : e[2] == "WAITING", self.people_movement)))
