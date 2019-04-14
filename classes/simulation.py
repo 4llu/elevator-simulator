@@ -8,6 +8,7 @@ from configuration import *
 from classes.person import Person
 from classes.elevator import Elevator
 from classes.elevatorAI import ElevatorAI
+from classes.logger import Logger
 
 class Simulation():
   def __init__(self):
@@ -16,6 +17,7 @@ class Simulation():
     self.people = []
     self.time = DAY_START_TIME
     self.day = 0
+    self.logger = Logger()
 
   # Create the people for the simulation
   def populate(self):
@@ -76,5 +78,9 @@ class Simulation():
         for elevator in self.elevators:
           elevator.reset()
 
-    cumulative_waiting_time = reduce(lambda s, p : p.waiting_ticks + s, self.people, 0)
-    print(cumulative_waiting_time)
+      # At the end of each cycle
+      self.logger.log_people_movement(self.time, self.people)
+
+    print(self.logger.get_total_waiting_time())
+    print(self.logger.get_total_elevator_time())
+    self.logger.save_to_file()
