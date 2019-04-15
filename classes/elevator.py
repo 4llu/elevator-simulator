@@ -9,6 +9,9 @@ class Elevator():
     self.passangers = []
     self.wait_time = 0
 
+  # ACT
+  #####
+
   # Process actions (if any) for this tick
   def act(self, going_up, going_down, elevatorAI):
 
@@ -55,6 +58,9 @@ class Elevator():
     else:
       print("Elevator confused")
 
+  # UTILS
+  #######
+
   def go_to_floor(self, floor):
     # Add to targets
     self.target_floors.append(floor)
@@ -63,7 +69,8 @@ class Elevator():
     self.target_floors = list(set(self.target_floors))
 
     # Compute new direction if idle
-    self.direction = 1 if self.target_floors[0] > self.current_floor else -1
+    d = self.target_floors[0] - self.current_floor
+    self.direction = int(d / abs(d)) if d != 0 else 0
 
     # Reorder targets
     self.target_floors.sort()
