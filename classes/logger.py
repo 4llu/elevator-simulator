@@ -29,5 +29,12 @@ class Logger():
     with open(filename, mode="w") as data_file:
       data_writer = csv.writer(data_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 
+      i = 0 # To prevent 1,000,000 logs in the case of error
+
       for dp in self.people_movement:
         data_writer.writerow(dp)
+
+        if i > 5000:
+          return
+
+        i += 1
