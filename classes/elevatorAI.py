@@ -142,8 +142,9 @@ class ElevatorAI():
     # Assign down going elevators (to already down going elevators)
     if len(down_elevators) > 0 and len(down_calls) > 0:
       i = 0 # Call index (to keep tack of elevator capacity)
+      j = 0 # To prevent infinite loop
       # Assign all possible calls to highest down going elevator
-      while i < ELEVATOR_CAPACITY and len(down_calls) > 0:
+      while i < ELEVATOR_CAPACITY and len(down_calls) > 0 and j < len(down_calls):
         # Check that elevator is above the call floor
         if down_elevators[-1].current_floor > down_calls[0][0]:
           # Add target floor
@@ -153,6 +154,7 @@ class ElevatorAI():
           del down_calls[0]
 
           i += 1
+        j += 1 # FIXME A bit of a hack
 
       # Elevator full
       del down_elevators[-1]
