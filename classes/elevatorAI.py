@@ -11,8 +11,6 @@ class ElevatorAI():
       self.basicAI()
     elif ELEVATOR_AI == "MEDIUM":
       self.mediumAI()
-    elif ELEVATOR_AI == "ADVANCED":
-      self.advancedAI()
     else:
       print("Elevator AI not chosen properly!")
       print("ELEVATOR_AI: " + ELEVATOR_AI)
@@ -148,6 +146,3 @@ class ElevatorAI():
 
       del free_elevators[0]
       del self.prediction_queue[0]
-
-  def advancedAI(self):
-    pass

@@ -6,7 +6,7 @@ FLOOR_CAPACITY = 10
 BUILDING_FULLNESS = 0.5
 
 # Elevators
-ELEVATOR_AI = "BASIC" # Options [BASIC, MEDIUM, ADVANCED]
+ELEVATOR_AI = "MEDIUM" # Options [BASIC, MEDIUM]
 CAMERAS = False
 ELEVATOR_NUM = 3
 TIME_TO_ELEVATOR = 4 # Ticks it takes to walk to the elevator from the camera in ticks
