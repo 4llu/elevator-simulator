@@ -23,7 +23,7 @@ class Elevator():
     elif len(self.target_floors) == 0:
       self.direction = 0
 
-    # Stop on a floor to drop people
+    # Stop on target floor
     elif self.current_floor == self.target_floors[0]:
       # Add wait time
       self.wait_time = ELEVATOR_LOAD_TIME
@@ -37,10 +37,12 @@ class Elevator():
           passanger.exit_elevator()
 
       # Get people in (and only take as many as capacity allows)
+      # FIXME Doesn't take into account people already in the elevator
       new_passangers = going_up[:ELEVATOR_CAPACITY] if self.direction > 0 else going_down[:ELEVATOR_CAPACITY]
       # Add to passangers
       self.passangers += new_passangers
 
+      # Tell the people they have entered
       for new_passanger in new_passangers:
         # Inform people they have entered the elevator
         new_passanger.enter_elevator()

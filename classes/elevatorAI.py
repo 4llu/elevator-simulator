@@ -37,8 +37,8 @@ class ElevatorAI():
     self.prediction_queue.append((floor, target_floor))
 
 
-  # UTILS FOR AI
-  ##############
+  # UTILS
+  #######
 
   # Remove people that have entered elevators from waiting lists (called after elevators take people in)
   def clear_waiting_lists(self):
@@ -65,6 +65,9 @@ class ElevatorAI():
     removal_list.reverse()
     for (f, p) in removal_list:
       del self.going_down[f][p]
+
+  # UTILS FOR AI
+  ##############
 
   def get_free_elevators(self):
     free_elevators = []
