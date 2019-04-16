@@ -2,12 +2,11 @@ from datetime import datetime
 
 # Building
 FLOORS = 10
-FLOOR_CAPACITY = 10
-BUILDING_FULLNESS = 0.5
+FLOOR_CAPACITY = 15
+BUILDING_FULLNESS = 0.8
 
 # Elevators
-ELEVATOR_AI = "MEDIUM" # Options [BASIC, MEDIUM]
-CAMERAS = False
+ELEVATOR_AI = "BASIC" # Options [BASIC, MEDIUM]
 ELEVATOR_NUM = 3
 TIME_TO_ELEVATOR = 4 # Ticks it takes to walk to the elevator from the camera in ticks
 ELEVATOR_LOAD_TIME = 1 # Ticks it takes for people to get in and out of the elevator
