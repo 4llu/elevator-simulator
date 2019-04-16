@@ -1,4 +1,4 @@
-from configuration import ELEVATOR_AI, FLOORS
+from configuration import ELEVATOR_AI, FLOORS, TIME_TO_ELEVATOR
 
 class ElevatorAI():
   def __init__(self, elevators):
@@ -25,7 +25,7 @@ class ElevatorAI():
 
   # Predictive elevator call
   def call_elevator_prediction(self, floor, target_floor):
-    self.prediction_queue.append((floor, target_floor))
+    self.prediction_queue.append([floor, target_floor, TIME_TO_ELEVATOR - 2])
 
   # UTILS FOR AI
   ##############
@@ -142,7 +142,19 @@ class ElevatorAI():
     # Send free elevators to prediction queue targets
     while len(free_elevators) > 0 and len(self.prediction_queue) > 0:
       # Send elevator
-      free_elevators[0].go_to_floor(self.prediction_queue[0])
+      free_elevators[0].go_to_floor(self.prediction_queue[0][0])
 
       del free_elevators[0]
       del self.prediction_queue[0]
+
+    # Decay prediction calls
+    removal_list = []
+    for i, p in enumerate(self.prediction_queue):
+      p[2] = p[2] - 1
+      # Remove if at 0
+      if p[2] == 0:
+        removal_list.append(i)
+
+    removal_list.reverse()
+    for i in removal_list:
+      del self.prediction_queue[i]

@@ -1,4 +1,4 @@
-from configuration import CAMERAS, TIME_TO_ELEVATOR
+from configuration import ELEVATOR_AI, TIME_TO_ELEVATOR
 from datetime import timedelta
 
 # STATE ORDER
@@ -61,7 +61,7 @@ class Person:
     elif self.state == 0 and time > self.to_work_time and not (self.waiting or self.in_elevator):
       self.target_floor = self.home_floor
 
-      if CAMERAS:
+      if ELEVATOR_AI == "MEDIUM":
         self.distance_to_elevator = TIME_TO_ELEVATOR
       else:
         self.waiting = True
@@ -71,7 +71,7 @@ class Person:
       self.state += 1
       self.target_floor = 0
 
-      if CAMERAS:
+      if ELEVATOR_AI == "MEDIUM":
         self.distance_to_elevator = TIME_TO_ELEVATOR
       else:
         self.waiting = True
@@ -83,7 +83,7 @@ class Person:
       self.state += 1
       self.target_floor = self.home_floor
 
-      if CAMERAS:
+      if ELEVATOR_AI == "MEDIUM":
         self.distance_to_elevator = TIME_TO_ELEVATOR
       else:
         self.waiting = True
@@ -95,7 +95,7 @@ class Person:
       self.state += 1
       self.target_floor = 0
 
-      if CAMERAS:
+      if ELEVATOR_AI == "MEDIUM":
         self.distance_to_elevator = TIME_TO_ELEVATOR
       else:
         self.waiting = True
