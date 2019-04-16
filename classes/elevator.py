@@ -1,4 +1,4 @@
-from configuration import ELEVATOR_CAPACITY, ELEVATOR_LOAD_TIME
+from configuration import ELEVATOR_LOAD_TIME
 
 class Elevator():
   def __init__(self):
@@ -42,9 +42,7 @@ class Elevator():
       for i in removal_list:
         del self.passangers[i]
 
-      # Get people in (and only take as many as capacity allows)
-      # FIXME Doesn't take into account people already in the elevator
-      new_passangers = going_up[:ELEVATOR_CAPACITY] if self.direction > 0 else going_down[:ELEVATOR_CAPACITY]
+      new_passangers = going_up if self.direction > 0 else going_down
 
       # Tell the people they have entered
       for new_passanger in new_passangers:

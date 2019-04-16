@@ -1,4 +1,4 @@
-from configuration import ELEVATOR_AI, ELEVATOR_CAPACITY, FLOORS
+from configuration import ELEVATOR_AI, FLOORS
 
 class ElevatorAI():
   def __init__(self, elevators):
@@ -123,18 +123,13 @@ class ElevatorAI():
       ####
 
     # Assign up going elevators (to free elevators)
-    # NOTE Technically overkill, as only up calls come from floor 0
-    while len(free_elevators) > 0 and len(up_calls) > 0:
-      i = 0 # Call index (to keep track of elevator capacity)
-
-      while i < ELEVATOR_CAPACITY and len(up_calls) > 0:
+    if len(free_elevators) > 0 and len(up_calls) > 0:
+      while len(up_calls) > 0:
         # Add target floor
         free_elevators[0].go_to_floor(up_calls[0][0])
         # Remove from lists
         self.queue.remove(up_calls[0])
         del up_calls[0]
-
-        i += 1
 
       # Elevator no longer free
       del free_elevators[0]
@@ -144,10 +139,9 @@ class ElevatorAI():
 
     # Assign down going elevators (to already down going elevators)
     if len(down_elevators) > 0 and len(down_calls) > 0:
-      i = 0 # Call index (to keep tack of elevator capacity)
       j = 0 # To prevent infinite loop
       # Assign all possible calls to highest down going elevator
-      while i < ELEVATOR_CAPACITY and len(down_calls) > 0 and j < len(down_calls):
+      while len(down_calls) > 0 and j < len(down_calls):
         # Check that elevator is above the call floor
         if down_elevators[-1].current_floor > down_calls[0][0]:
           # Add target floor
@@ -156,31 +150,24 @@ class ElevatorAI():
           self.queue.remove(down_calls[0])
           del down_calls[0]
 
-          i += 1
         j += 1 # FIXME A bit of a hack
-
-      # Elevator full
-      del down_elevators[-1]
 
     # LEFTOVERS
     ###########
 
     # If calls left, add them to the (possible) free elevator
-    while len(down_calls) > 0 and len(free_elevators) > 0:
-      i = 0 # Call index (to keep track of elevator capacity)
-      while i < ELEVATOR_CAPACITY and len(down_calls) > 0:
+    if len(down_calls) > 0 and len(free_elevators) > 0:
+      while len(down_calls) > 0:
         # Add target floor
         free_elevators[0].go_to_floor(down_calls[0][0])
         # Remove from calls
         self.queue.remove(down_calls[0])
         del down_calls[0]
 
-        i += 1
-
-      # Elevator full
+      # Elevator no longer free
       del free_elevators[0]
 
-    # Any calls left carry on to the next tick
+    # NOTE Any calls left carry on to the next tick
 
   def mediumAI(self):
     # Do everything the same as in basic AI
