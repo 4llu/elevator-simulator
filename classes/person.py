@@ -40,7 +40,7 @@ class Person:
 
   # Process actions (if any) for this tick
   def act(self, time):
-    # Log if waiting
+    # Do nothing if in elevator
     if self.waiting:
       pass
 
