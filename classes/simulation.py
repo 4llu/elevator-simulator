@@ -81,7 +81,7 @@ class Simulation():
 
         # Reset people
         for person in self.people:
-          person.reset()
+          person.next_day()
 
         # Reset elevators
         for elevator in self.elevators:

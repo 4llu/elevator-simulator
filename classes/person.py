@@ -1,4 +1,5 @@
 from configuration import CAMERAS, TIME_TO_ELEVATOR
+from datetime import timedelta
 
 # STATE ORDER
 
@@ -112,5 +113,18 @@ class Person:
     self.target_floor = -1
 
   # Reset for a new day
-  def reset(self):
+  def next_day(self):
+    # Reset values
     self.state = 0
+    self.target_floor = -1
+    self.current_floor = 0
+    self.distance_to_elevator = 0
+    self.waiting = False
+    self.in_elevator = False
+    self.elevator_called = False
+
+    # Move days forwards
+    self.to_work_time += timedelta(days=1)
+    self.to_lunch_time += timedelta(days=1)
+    self.from_lunch_time += timedelta(days=1)
+    self.from_work_time += timedelta(days=1)
