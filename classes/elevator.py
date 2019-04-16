@@ -2,7 +2,6 @@ from configuration import ELEVATOR_CAPACITY, ELEVATOR_LOAD_TIME
 
 class Elevator():
   def __init__(self):
-    self.capacity = ELEVATOR_CAPACITY
     self.current_floor = 0
     self.target_floors = []
     self.direction = 0 # Options: -1 = Down, 0 = Idle, 1 = Up
@@ -93,4 +92,7 @@ class Elevator():
   # Reset for a new day
   def reset(self):
     self.current_floor = 0
+    self.target_floors = []
+    self.direction = 0
     self.passangers = []
+    self.wait_time = 0
