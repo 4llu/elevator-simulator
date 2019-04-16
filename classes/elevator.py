@@ -39,8 +39,6 @@ class Elevator():
       # Get people in (and only take as many as capacity allows)
       # FIXME Doesn't take into account people already in the elevator
       new_passangers = going_up[:ELEVATOR_CAPACITY] if self.direction > 0 else going_down[:ELEVATOR_CAPACITY]
-      # Add to passangers
-      self.passangers += new_passangers
 
       # Tell the people they have entered
       for new_passanger in new_passangers:
@@ -48,6 +46,8 @@ class Elevator():
         new_passanger.enter_elevator()
         # Add new target floors
         self.go_to_floor(new_passanger.target_floor)
+        # Add to passangers
+        self.passangers.append(new_passanger)
 
       # Remove people that entered the elevator from waiting lists
       elevatorAI.clear_waiting_lists()
