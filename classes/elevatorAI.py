@@ -56,7 +56,7 @@ class ElevatorAI():
       if elevator.direction == -1:
         down_elevators.append(elevator)
     # Sort lowest first and return
-    return sorted(down_elevators, key=lambda e : e.current_floor)
+    return sorted(down_elevators, key=lambda e : -e.current_floor)
 
   # Calls #
 
@@ -106,18 +106,17 @@ class ElevatorAI():
 
     # Assign down going elevators (to already down going elevators)
     if len(down_elevators) > 0 and len(down_calls) > 0:
-      j = 0 # To prevent infinite loop
       # Assign all possible calls to highest down going elevator
-      while len(down_calls) > 0 and j < len(down_calls):
+      while len(down_calls) > 0:
         # Check that elevator is above the call floor
-        if down_elevators[-1].current_floor > down_calls[0][0]:
+        if down_elevators[0].current_floor > down_calls[0][0]:
           # Add target floor
-          down_elevators[-1].go_to_floor(down_calls[0][0])
+          down_elevators[0].go_to_floor(down_calls[0][0])
           # Remove from calls
           self.queue.remove(down_calls[0])
           del down_calls[0]
-
-        j += 1 # FIXME A bit of a hack
+        else:
+          break
 
     # LEFTOVERS
     ###########
