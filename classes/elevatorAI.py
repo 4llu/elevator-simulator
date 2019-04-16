@@ -5,8 +5,6 @@ class ElevatorAI():
     self.elevators = elevators
     self.queue = [] # (floor, direction)
     self.prediction_queue = [] # (current_floor, target_floor)
-    self.going_up = [[] for i in range(FLOORS)]
-    self.going_down = [[] for i in range(FLOORS)]
 
   def act(self):
     if ELEVATOR_AI == "BASIC":
@@ -26,48 +24,15 @@ class ElevatorAI():
   def call_elevator(self, person, floor, direction):
     # Call list
     self.queue.append((floor, direction))
-    # People list
-    if direction > 0:
-      self.going_up[floor].append(person)
-    else:
-      self.going_down[floor].append(person)
 
   # Predictive elevator call
   def call_elevator_prediction(self, floor, target_floor):
     self.prediction_queue.append((floor, target_floor))
 
-
-  # UTILS
-  #######
-
-  # Remove people that have entered elevators from waiting lists (called after elevators take people in)
-  def clear_waiting_lists(self):
-    # Going up
-    removal_list = []
-    for f in range(len(self.going_up)):
-      for p in range(len(self.going_up[f])):
-        if self.going_up[f][p].in_elevator:
-          removal_list.append((f, p))
-
-    # Remove the people that entered up going elevators
-    removal_list.reverse()
-    for (f, p) in removal_list:
-      del self.going_up[f][p]
-
-    # Going down
-    removal_list = []
-    for f in range(len(self.going_down)):
-      for p in range(len(self.going_down[f])):
-        if self.going_down[f][p].in_elevator:
-          removal_list.append((f, p))
-
-    # Remove people that enetered downgoing the elevators
-    removal_list.reverse()
-    for (f, p) in removal_list:
-      del self.going_down[f][p]
-
   # UTILS FOR AI
   ##############
+
+  # Elevators #
 
   def get_free_elevators(self):
     free_elevators = []
@@ -92,6 +57,8 @@ class ElevatorAI():
         down_elevators.append(elevator)
     # Sort lowest first and return
     return sorted(down_elevators, key=lambda e : e.current_floor)
+
+  # Calls #
 
   def get_up_calls(self):
     # Separate calls per direction

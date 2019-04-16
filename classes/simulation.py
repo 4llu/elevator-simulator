@@ -52,8 +52,7 @@ class Simulation():
         # Check if waiting for elevator
         if person.waiting and not person.elevator_called:
           # Call elevator
-          direction = 1 if person.target_floor - person.current_floor > 0 else -1
-          self.elevatorAI.call_elevator(person, person.current_floor, direction)
+          self.elevatorAI.call_elevator(person, person.current_floor, person.get_direction())
           person.elevator_called = True
 
       # ELEVATOR AI ACT
@@ -65,7 +64,7 @@ class Simulation():
       ###############
 
       for elevator in self.elevators:
-        elevator.act(self.elevatorAI.going_down[elevator.current_floor], self.elevatorAI.going_up[elevator.current_floor], self.elevatorAI)
+        elevator.act(self.elevatorAI, self.people)
 
       # TIME
       ######

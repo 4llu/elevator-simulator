@@ -29,8 +29,14 @@ class Person:
     self.in_elevator = False
     self.elevator_called = False
 
-    # ACT
-    #####
+  # UTILS
+  ########
+
+  def get_direction(self):
+    return 1 if self.current_floor == 0 else -1
+
+  # ACT
+  #####
 
   # Process actions (if any) for this tick
   def act(self, time):

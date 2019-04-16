@@ -12,17 +12,17 @@ class Elevator():
   #####
 
   # Process actions (if any) for this tick
-  def act(self, going_up, going_down, elevatorAI):
+  def act(self, elevatorAI, people):
 
-    # Wait (Doors, opening/closing, etc.)
+    ## Wait (Doors, opening/closing, etc.) ##
     if self.wait_time > 0:
       self.wait_time -= 1
 
-    # No orders currently
+    ## No orders currently ##
     elif len(self.target_floors) == 0:
       self.direction = 0
 
-    # Stop on target floor
+    ## Stop on target floor ##
     elif self.current_floor == self.target_floors[0]:
       # Add wait time
       self.wait_time = ELEVATOR_LOAD_TIME
@@ -42,25 +42,20 @@ class Elevator():
       for i in removal_list:
         del self.passangers[i]
 
-      new_passangers = going_up if self.direction > 0 else going_down
+      direction = 1 if self.current_floor == 0 else -1
 
-      # Tell the people they have entered
-      for new_passanger in new_passangers:
-        # Inform people they have entered the elevator
-        new_passanger.enter_elevator()
-        # Add new target floors
-        self.go_to_floor(new_passanger.target_floor)
-        # Add to passangers
-        self.passangers.append(new_passanger)
+      # Get new people in
+      for p in people:
+        if p.waiting and p.get_direction() == direction:
+          p.enter_elevator()
+          self.passangers.append(p)
+          self.go_to_floor(p.target_floor)
 
-      # Remove people that entered the elevator from waiting lists
-      elevatorAI.clear_waiting_lists()
-
-    # Move a floor
+    ## Move a floor ##
     elif self.current_floor != self.target_floors[0]:
       self.current_floor += self.direction
 
-    # Error case
+    ## Error case ##
     else:
       print("Elevator confused")
 
@@ -78,8 +73,9 @@ class Elevator():
     d = self.target_floors[0] - self.current_floor
     self.direction = int(d / abs(d)) if d != 0 else 0
 
+    # In case already on the right floor
     if self.direction == 0:
-      self.direction = 1 if floor > 0 else -1
+      self.direction = self.target_floors[0]
 
     # Reorder targets
     self.target_floors.sort()
