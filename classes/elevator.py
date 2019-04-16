@@ -32,9 +32,16 @@ class Elevator():
       self.target_floors.pop()
 
       # Let people out
-      for passanger in self.passangers:
+      removal_list = []
+      for i, passanger in enumerate(self.passangers):
         if passanger.target_floor == self.current_floor:
           passanger.exit_elevator()
+          removal_list.append(i)
+
+      # Remove people from passanger list
+      removal_list.reverse()
+      for i in removal_list:
+        del self.passangers[i]
 
       # Get people in (and only take as many as capacity allows)
       # FIXME Doesn't take into account people already in the elevator
