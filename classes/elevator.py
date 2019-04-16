@@ -72,6 +72,9 @@ class Elevator():
     d = self.target_floors[0] - self.current_floor
     self.direction = int(d / abs(d)) if d != 0 else 0
 
+    if self.direction == 0:
+      self.direction = 1 if floor > 0 else -1
+
     # Reorder targets
     self.target_floors.sort()
     # Reverse if going down
