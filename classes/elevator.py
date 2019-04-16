@@ -1,4 +1,4 @@
-from configuration import ELEVATOR_LOAD_TIME
+from configuration import ELEVATOR_LOAD_TIME, FLOORS
 
 class Elevator():
   def __init__(self):
@@ -50,6 +50,18 @@ class Elevator():
           p.enter_elevator()
           self.passangers.append(p)
           self.go_to_floor(p.target_floor)
+
+      # Remove people that have been too long in the elevator
+      removal_list = []
+      for i, p in enumerate(self.passangers):
+        if p.time_in_elevator > FLOORS * 2:
+          removal_list.append(i)
+          p.exit_elevator()
+
+      removal_list.reverse()
+      for i in removal_list:
+        del self.passangers[i]
+
 
     ## Move a floor ##
     elif self.current_floor != self.target_floors[0]:

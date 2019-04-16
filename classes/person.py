@@ -28,6 +28,7 @@ class Person:
     self.waiting = False
     self.in_elevator = False
     self.elevator_called = False
+    self.time_in_elevator = 0
 
   # UTILS
   ########
@@ -43,6 +44,10 @@ class Person:
     # Do nothing if in elevator
     if self.waiting:
       pass
+
+    # Log if in elevator
+    if self.in_elevator:
+      self.time_in_elevator += 1
 
     # Do nothing if walking to elevator
     elif self.distance_to_elevator > 0:
@@ -117,6 +122,7 @@ class Person:
     self.state += 1
     self.current_floor = self.target_floor
     self.target_floor = -1
+    self.time_in_elevator = 0
 
   # Reset for a new day
   def next_day(self):
