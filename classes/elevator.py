@@ -14,6 +14,18 @@ class Elevator():
   # Process actions (if any) for this tick
   def act(self, elevatorAI, people):
 
+    # NOTE
+    # Remove people that have been too long in the elevator
+    removal_list = []
+    for i, p in enumerate(self.passangers):
+      if p.time_in_elevator > FLOORS * 2:
+        removal_list.append(i)
+        p.exit_elevator()
+
+    removal_list.reverse()
+    for i in removal_list:
+      del self.passangers[i]
+
     ## Wait (Doors, opening/closing, etc.) ##
     if self.wait_time > 0:
       self.wait_time -= 1
@@ -50,18 +62,6 @@ class Elevator():
           p.enter_elevator()
           self.passangers.append(p)
           self.go_to_floor(p.target_floor)
-
-      # Remove people that have been too long in the elevator
-      removal_list = []
-      for i, p in enumerate(self.passangers):
-        if p.time_in_elevator > FLOORS * 2:
-          removal_list.append(i)
-          p.exit_elevator()
-
-      removal_list.reverse()
-      for i in removal_list:
-        del self.passangers[i]
-
 
     ## Move a floor ##
     elif self.current_floor != self.target_floors[0]:
