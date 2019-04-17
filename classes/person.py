@@ -1,4 +1,4 @@
-from configuration import ELEVATOR_AI, TIME_TO_ELEVATOR
+from configuration import ELEVATOR_AI, TIME_TO_ELEVATOR, FLOORS
 from datetime import timedelta
 
 # STATE ORDER
@@ -28,6 +28,7 @@ class Person:
     self.waiting = False
     self.in_elevator = False
     self.elevator_called = False
+    self.time_waiting = 0
     self.time_in_elevator = 0
 
   # UTILS
@@ -48,6 +49,16 @@ class Person:
     # Log if in elevator
     if self.in_elevator:
       self.time_in_elevator += 1
+
+    # Log if waiting
+    if self.waiting:
+      self.time_waiting += 1
+
+    # NOTE
+    # Remove from waiting if stuck waiting
+    if self.time_waiting > FLOORS * 2:
+      self.enter_elevator()
+      self.exit_elevator()
 
     # Do nothing if walking to elevator
     elif self.distance_to_elevator > 0:
@@ -122,6 +133,7 @@ class Person:
     self.state += 1
     self.current_floor = self.target_floor
     self.target_floor = -1
+    self.time_waiting = 0
     self.time_in_elevator = 0
 
   # Reset for a new day
