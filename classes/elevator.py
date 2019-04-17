@@ -82,18 +82,26 @@ class Elevator():
     self.target_floors = list(set(self.target_floors))
 
     # Compute new direction if idle
-    d = self.target_floors[0] - self.current_floor
-    self.direction = int(d / abs(d)) if d != 0 else 0
-
-    # In case already on the right floor
-    if self.direction == 0:
-      self.direction = self.target_floors[0]
+    if len(self.target_floors) == 1:
+      d = self.target_floors[0] - self.current_floor
+      # If movement required
+      if d != 0:
+        self.direction = int(d / abs(d))
+      # In case already on the right floor
+      else:
+        if self.direction == 0:
+          self.direction = 1 if self.current_floor == 0 else -1
 
     # Reorder targets
     self.target_floors.sort()
     # Reverse if going down
     if self.direction < 0:
       self.target_floors.reverse()
+
+    # print(self.target_floors)
+    # print(self.current_floor, self.direction)
+    if self.direction not in [-1, 1, 0]:
+      print(self.direction, d)
 
   # Reset for a new day
   def reset(self):
