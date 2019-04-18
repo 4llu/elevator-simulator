@@ -1,9 +1,9 @@
 from datetime import datetime
 
 # Building
-FLOORS = 10
-FLOOR_CAPACITY = 15
-BUILDING_FULLNESS = 0.8
+FLOORS = 20
+FLOOR_CAPACITY = 10
+BUILDING_FULLNESS = 0.5
 
 # Elevators
 ELEVATOR_AI = "BASIC" # Options [BASIC, MEDIUM]
