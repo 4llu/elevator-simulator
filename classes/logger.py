@@ -23,8 +23,8 @@ class Logger():
     return len(list(filter(lambda e : e[2] == "IN_ELEVATOR", self.people_movement)))
 
   def save_to_file(self):
-    filename = "logs/log_[{}].csv".format(datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
-    # filename = "generated_data.csv".format(tf(datetime.now()))
+    twt = self.get_total_waiting_time()
+    filename = "logs/log_[{}]_[{}].csv".format(datetime.now().strftime("%Y-%m-%d-%H-%M-%S"), twt)
 
     with open(filename, mode="w") as data_file:
       data_writer = csv.writer(data_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
@@ -32,6 +32,7 @@ class Logger():
       i = 0 # To prevent 1,000,000 logs in the case of error
 
       for dp in self.people_movement:
+        # if dp[2] == "WAITING":
         data_writer.writerow(dp)
 
         if i > 5000:
